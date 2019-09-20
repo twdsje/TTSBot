@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@google-cloud/text-to-speech": "^1.1.4",
+    "better-queue": "^3.8.10",
     "boostrap": "^2.0.0",
     "discord.js": "^11.5.1",
     "errorhandler": "^1.5.1",
@@ -19,7 +20,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "startall": "(cd backend && node app.js) && npm run start"
   },
   "eslintConfig": {
     "extends": "react-app"

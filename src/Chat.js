@@ -1,5 +1,6 @@
 import React from "react";
 import io from "socket.io-client";
+import {Message } from './message';
 
 class Chat extends React.Component{
     constructor(props){
@@ -8,7 +9,8 @@ class Chat extends React.Component{
         this.state = {
             username: '',
             message: '',
-            messages: []
+            messages: [],
+            auto: false
         };
         
         this.socket = io('localhost:5000');
@@ -31,34 +33,56 @@ class Chat extends React.Component{
             });
             //this.setState({message: ''});
         }
+        
+        this.handleInputChange = this.handleInputChange.bind(this);
     }
+    
+    handleInputChange(event) {
+      const target = event.target;
+      const value = target.type === 'checkbox' ? target.checked : target.value;
+      const name = target.name;
+
+      this.setState({
+        [name]: value
+      });
+    }
+    
     render(){
         return (
-            <div className="container">
-                <div className="row">
-                    <div className="col-4">
-                        <div className="card">
-                            <div className="card-body">
-                                <div className="card-title">Global Chat</div>
-                                <hr/>
-                                <div className="messages">
-                                    {this.state.messages.map(message => {
-                                        return (
-                                            <div>{message.author}: {message.message}</div>
-                                        )
-                                    })}
-                                </div>
-                                <div className="footer">
+            <div className="container-fluid">
+            
+            <p>
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    Expand
+  </button>
+</p>
+<div class="collapse" id="collapseExample">
+  <div class="card card-body">
+                                    <div className="header">
                                     <input type="text" placeholder="Username" value={this.state.username} onChange={ev => this.setState({username: ev.target.value})} className="form-control"/>
                                     <br/>
                                     <input type="text" placeholder="Message" className="form-control" value={this.state.message} onChange={ev => this.setState({message: ev.target.value})}/>
                                     <br/>
                                     <button onClick={this.sendMessage} className="btn btn-primary form-control">Send</button>
                                 </div>
+  </div>
+</div>
+            
+                        <div className="card">
+                            <div className="card-body">
+                                <div className="header">
+                                    <label>Auto Read <input name="auto" type="checkbox" checked={this.state.auto} onChange={this.handleInputChange} /></label>
+                                </div>
+                                <div className="card-title">Global Chat</div>
+                                <hr/>
+                                <div className="messages">
+                                    {this.state.messages.map((message, i) => 
+                                        <Message username={message.username} message={message.message} id={i} auto={this.state.auto} />
+                                    )}
+                                </div>
+                                
                             </div>
                         </div>
-                    </div>
-                </div>
             </div>
         );
     }
