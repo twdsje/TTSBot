@@ -22,13 +22,14 @@ class Chat extends React.Component{
         const addMessage = data => {
             console.log(data);
             this.setState({messages: [...this.state.messages, data]});
+            this.messagesEnd.scrollIntoView({ behavior: "smooth" })
             console.log(this.state.messages);
         };
         
         this.sendMessage = ev => {
             ev.preventDefault();
             this.socket.emit('SEND_MESSAGE', {
-                author: this.state.username,
+                username: this.state.username,
                 message: this.state.message
             });
             //this.setState({message: ''});
@@ -70,9 +71,6 @@ class Chat extends React.Component{
             
                         <div className="card">
                             <div className="card-body">
-                                <div className="header">
-                                    <label>Auto Read <input name="auto" type="checkbox" checked={this.state.auto} onChange={this.handleInputChange} /></label>
-                                </div>
                                 <div className="card-title">Global Chat</div>
                                 <hr/>
                                 <div className="messages">
@@ -80,6 +78,11 @@ class Chat extends React.Component{
                                         <Message username={message.username} message={message.message} id={i} auto={this.state.auto} />
                                     )}
                                 </div>
+                            
+                                <div className="header" ref={(el) => { this.messagesEnd = el; }}>
+                                    <label>Auto Read <input name="auto" type="checkbox" checked={this.state.auto} onChange={this.handleInputChange} /></label>
+                                </div>
+                                
                                 
                             </div>
                         </div>

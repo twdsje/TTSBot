@@ -24,7 +24,7 @@ export class Message extends React.Component<Props, State> {
     }
     
     readMessage() {
-        this.socket.emit('READ_MESSAGE', { message : this.state.message});
+        this.socket.emit('READ_MESSAGE', { username: this.state.username, message : this.state.message});
     }
     
     render(){
